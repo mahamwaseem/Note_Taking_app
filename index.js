@@ -26,5 +26,23 @@ const server = http.createServer((req, res) => {
       res.end(JSON.stringify(note));
     });
   }
+   // DELETE /notes/:id
+  else if (method === 'DELETE' && url.pathname.startsWith('/notes/')) {
+    const id = parseInt(url.pathname.split('/')[2]);
+    notes = notes.filter(note => note.id !== id);
+
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ message: `Note ${id} deleted` }));
+  }
+
+  // 404 handler
+  else {
+    res.writeHead(404, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ message: 'Route not found' }));
+  }
+
+});
+server.listen(3000, () => {
+  console.log('Server running at http://localhost:3000');
 });
 
